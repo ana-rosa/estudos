@@ -12,14 +12,39 @@ Calculadora básica
     - Multiplicação
     - Divisão
 - Suporte a float
-
 - Interface -> texto? CLI?
     $ python calculadora.py
+    Digite a expressão:  # saída
+    1 + 5                # entrada
+    = 6.0                  # saída
+    $ python calculadora.py
     Digite a expressão:
-    1 + 4
-    = 5
-    - 2
-    = 3
+    2 * -5
+    = -10.0
+- Interação/iteração
+    $ python calculadora.py
+    Digite a expressão:
+    1 + 5
+    = 6.0
+    4 - 2
+    = 2.0
+    3 * 10
+    = 30.0
+    fim
+
+- Interromper programa com ctrl+d ou digitando 'exit'
+- Memória -> pensar sobre
+- Fazer resultado retornar inteiro se a entrada for inteira, por ex:
+    1 + 5
+    = 6
+    e não 6.0
+- Fazer expressões funcionarem sem espaço:
+    1+ 5
+    = 6.0
+    1-10
+    = -9.0
+    1+-5
+    = -4.0
 """
 
 
@@ -37,16 +62,6 @@ def divisao(a, b):
 
 def multiplicacao(a, b):
     return a * b
-
-
-# def calculadora(expressao):
-#     # expressao = "100 + 1"
-#     a = float(expressao[0])
-#     b = float(expressao[4])
-#     operacao = expressao[2]
-#
-#     if operacao == "+":
-#         return soma(a, b)
 
 
 def processa_expressao(expressao):
@@ -67,50 +82,17 @@ def calculadora(expressao):
     return resultado
 
 
-def test_soma():
-    assert soma(2, 2) == 4
-    assert soma(-3, 5) == 2
+def principal():
+    print('Digite a expressão:')
+    while True:
+        expressao = input()
+        if expressao == "fim":
+            break
+        resultado = calculadora(expressao)
+        print('=', resultado)
 
 
-def test_subtracao():
-    assert subtracao(5, 3) == 2
-    assert subtracao(3, 3) == 0
-
-
-def test_divisao():
-    assert divisao(6, 3) == 2
-    assert divisao(6, -3) == -2
-
-
-def test_multiplicacao():
-    assert multiplicacao(6, 2) == 12
-    assert multiplicacao(3, 3) == 9
-
-
-def test_processa_expressao():
-    assert processa_expressao("1 + 5") == (1, 5, '+')
-    assert processa_expressao("100 + 1") == (100, 1, '+')
-    assert processa_expressao("100 - 1") == (100, 1, '-')
-    assert processa_expressao("100 * 1") == (100, 1, '*')
-    assert processa_expressao("100 / 1") == (100, 1, '/')
-
-
-def test_calculadora_soma():
-    assert calculadora("1 + 5") == 6
-    assert calculadora("5 + 3") == 8
-
-def test_calculadora_subtracao():
-    assert calculadora ("3 - 2") == 1
-    assert calculadora ("1 - 4") == -3
-
-def test_calculadora_multiplicacao():
-    assert calculadora ("4 * 5") == 20
-    assert calculadora ("100 * 6") == 600
-
-def test_calculadora_divisao():
-    assert calculadora ("4 / 2") == 2
-
-def test_calculadora_float():
-    assert calculadora ("3 / 2") == 1.5
-    assert calculadora ("1.5 + 1") == 2.5 
-
+if __name__ == '__main__':
+    # chamado ao rodar python calculadora.py
+    # e NUNCA chamado ao rodar import calculadora
+    principal()
