@@ -31,8 +31,11 @@ Calculadora básica
     3 * 10
     = 30.0
     fim
-
 - Interromper programa com ctrl+d ou digitando 'exit'
+    - exit
+    - ctrl+d
+
+- Tratar erros
 - Memória -> pensar sobre
 - Fazer resultado retornar inteiro se a entrada for inteira, por ex:
     1 + 5
@@ -85,8 +88,13 @@ def calculadora(expressao):
 def principal():
     print('Digite a expressão:')
     while True:
-        expressao = input()
-        if expressao == "fim":
+        try:
+            expressao = input()
+        except EOFError:
+            break
+
+        if expressao in ("fim", "exit"):
+        # if expressao == "fim" or expressao == "exit":
             break
         resultado = calculadora(expressao)
         print('=', resultado)

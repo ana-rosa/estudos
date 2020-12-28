@@ -1,4 +1,5 @@
 import io
+from unittest import mock
 
 import pytest
 
@@ -22,14 +23,19 @@ def digita(monkeypatch):
     return digita
 
 
-def checa_stdout(capsys, saida):
+@pytest.fixture
+def checa_saida(capsys):
     """
     Captura toda saída do programa (stdout e stderr) e compara com o esperado
     pelo argumento saída
     """
 
-    captured = capsys.readouterr()
-    assert captured.out.split('\n')[:-1] == saida
+    def checa_saida(saida_esperada):
+        saida_real = capsys.readouterr()
+        saida_real = saida_real.out.split('\n')[:-1]
+        assert saida_real == saida_esperada
+
+    return checa_saida
 
 
 def test_soma():
@@ -66,34 +72,51 @@ def test_calculadora_soma():
 
 
 def test_calculadora_subtracao():
-    assert calculadora ("3 - 2") == 1
-    assert calculadora ("1 - 4") == -3
+    assert calculadora("3 - 2") == 1
+    assert calculadora("1 - 4") == -3
 
 
 def test_calculadora_multiplicacao():
-    assert calculadora ("4 * 5") == 20
-    assert calculadora ("100 * 6") == 600
+    assert calculadora("4 * 5") == 20
+    assert calculadora("100 * 6") == 600
 
 
 def test_calculadora_divisao():
-    assert calculadora ("4 / 2") == 2
+    assert calculadora("4 / 2") == 2
 
 
 def test_calculadora_float():
-    assert calculadora ("3 / 2") == 1.5
-    assert calculadora ("1.5 + 1") == 2.5 
+    assert calculadora("3 / 2") == 1.5
+    assert calculadora("1.5 + 1") == 2.5 
 
 
-def test_principal_soma(capsys, digita):
+def test_principal_soma(digita, checa_saida):
     digita(["1 + 5", "fim"])
 
     principal()
 
-    checa_stdout(capsys, ["Digite a expressão:", "= 6.0"])
+    checa_saida(["Digite a expressão:", "= 6.0"])
 
 
-def test_principal_soma_subtracao(capsys, digita):
+def test_principal_soma_subtracao(digita, checa_saida):
     digita(["3 + 6", "7 - 4", "fim"])
 
     principal()
-    checa_stdout(capsys, ["Digite a expressão:", "= 9.0", "= 3.0"])
+
+    checa_saida(["Digite a expressão:", "= 9.0", "= 3.0"])
+
+
+def test_fecha_programa_exit(digita, checa_saida):
+    digita(["exit"])
+
+    principal()
+
+    checa_saida(["Digite a expressão:"])
+
+
+def test_fecha_programa_ctrld(digita, checa_saida):
+    with mock.patch("calculadora.input") as input_mock:
+        input_mock.side_effect = EOFError
+        principal()
+
+    checa_saida(["Digite a expressão:"])
