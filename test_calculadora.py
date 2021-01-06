@@ -66,6 +66,12 @@ def test_processa_expressao():
     assert processa_expressao("100 / 1") == (100, 1, '/')
 
 
+def test_processa_expressao_sem_espaco():
+    assert processa_expressao("1+-5") == (1, -5, '+')
+    assert processa_expressao("1/5") == (1, 5, '/')
+    assert processa_expressao("100/    124") == (100, 124, '/')
+
+
 def test_calculadora_soma():
     assert calculadora("1 + 5") == 6
     assert calculadora("5 + 3") == 8
@@ -120,3 +126,4 @@ def test_fecha_programa_ctrld(digita, checa_saida):
         principal()
 
     checa_saida(["Digite a expressão:"])
+

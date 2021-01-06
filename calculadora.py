@@ -34,13 +34,6 @@ Calculadora básica
 - Interromper programa com ctrl+d ou digitando 'exit'
     - exit
     - ctrl+d
-
-- Tratar erros
-- Memória -> pensar sobre
-- Fazer resultado retornar inteiro se a entrada for inteira, por ex:
-    1 + 5
-    = 6
-    e não 6.0
 - Fazer expressões funcionarem sem espaço:
     1+ 5
     = 6.0
@@ -48,6 +41,13 @@ Calculadora básica
     = -9.0
     1+-5
     = -4.0
+
+- Tratar erros
+- Memória -> pensar sobre
+- Fazer resultado retornar inteiro se a entrada for inteira, por ex:
+    1 + 5
+    = 6
+    e não 6.0
 """
 
 
@@ -68,7 +68,13 @@ def multiplicacao(a, b):
 
 
 def processa_expressao(expressao):
-    a, operacao, b = expressao.split()
+    for caracter in expressao:
+        # if caracter == "+" or caracter == "-" or caracter == "*" or caracter == "/":
+        if caracter in "+-*/":
+            operacao = caracter
+            break
+
+    a, b = expressao.split(operacao)
     return float(a), float(b), operacao
 
 
